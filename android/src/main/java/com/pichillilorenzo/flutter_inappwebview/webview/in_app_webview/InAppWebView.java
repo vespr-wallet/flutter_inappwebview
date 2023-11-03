@@ -1520,14 +1520,22 @@ final public class InAppWebView extends InputAwareWebView implements InAppWebVie
       containerView
               .getHandler()
               .postDelayed(
-                      () -> {
-                        InputMethodManager imm =
-                                (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
-                        boolean isAcceptingText = false;
-                        try {
-                          if (imm != null) {
-                            isAcceptingText = imm.isAcceptingText();
+                      new Runnable() {
+                        @Override
+                        public void run() {
+                          InputMethodManager imm =
+                                  (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+                          boolean isAcceptingText = false;
+                          try {
+                            if (imm != null) {
+                              // imm.isAcceptingText() seems to sometimes crash on some devices
+                              isAcceptingText = imm.isAcceptingText();
+                            }
+                          } catch (Exception ignored) {
                           }
+                          if (containerView != null && imm != null && !isAcceptingText) {
+                            imm.hideSoftInputFromWindow(
+                                    containerView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);}
                         } catch (Exception ignored) {
                         }
                         if (containerView != null && imm != null && !isAcceptingText) {
