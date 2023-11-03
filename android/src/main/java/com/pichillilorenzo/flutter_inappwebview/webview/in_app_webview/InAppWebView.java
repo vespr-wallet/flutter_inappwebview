@@ -1532,15 +1532,11 @@ final public class InAppWebView extends InputAwareWebView implements InAppWebVie
                               isAcceptingText = imm.isAcceptingText();
                             }
                           } catch (Exception ignored) {
+                            // no-op
                           }
                           if (containerView != null && imm != null && !isAcceptingText) {
                             imm.hideSoftInputFromWindow(
                                     containerView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);}
-                        } catch (Exception ignored) {
-                        }
-                        if (containerView != null && imm != null && !isAcceptingText) {
-                          imm.hideSoftInputFromWindow(
-                                  containerView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                         }
                       },
                       128);
